@@ -1,7 +1,7 @@
 package com.bbdsoftware.estatemanagement.controllers;
 
-import com.bbdsoftware.estatemanagement.dto.TenantDto;
 import com.bbdsoftware.estatemanagement.dto.NewApartmentDto;
+import com.bbdsoftware.estatemanagement.dto.TenantDto;
 import com.bbdsoftware.estatemanagement.entities.Apartment;
 import com.bbdsoftware.estatemanagement.services.ApartmentServices;
 import jakarta.validation.Valid;
@@ -33,7 +33,7 @@ public class ApartmentsController {
     }
 
     @PostMapping()
-    public Iterable<Apartment> addApartment(@RequestBody List<NewApartmentDto> dto) {
+    public Iterable<Apartment> addApartment(@Valid @RequestBody List<NewApartmentDto> dto) {
         return services.addApartment(dto);
     }
 

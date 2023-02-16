@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class ApartmentMappers {
@@ -33,53 +34,35 @@ public class ApartmentMappers {
         return dtos;
     }
 
+    // side effect :(
     public List<Apartment> NewApartmentDtoToApartmentEntity(List<NewApartmentDto> dtos) {
         List<Apartment> entities = new ArrayList<>();
 
         for (NewApartmentDto dto : dtos) {
             Apartment entity = new Apartment();
-            ApartmentDetails detailsForEntity = new ApartmentDetails();
 
             // check if apartmentDetailsExists
+            Optional<ApartmentDetails> optionalEntityDetails = apartmentDetailsRepo.findApartmentDetailsByBedroomsAndBathroomsAndParkingSpaces(
+                    dto.getBedrooms(),
+                    dto.getBathrooms(),
+                    dto.getParkingSpaces()
+            );
 
+            // if exists, use those details instead of inserting a new apartmentDetails entity
+            if (optionalEntityDetails.isPresent()) {
+                entity.setDetails(optionalEntityDetails.get());
+            } else {
+                ApartmentDetails detailsForEntity = new ApartmentDetails();
+                detailsForEntity.setBedrooms(dto.getBedrooms());
+                detailsForEntity.setBathrooms(dto.getBathrooms());
+                detailsForEntity.setParkingSpaces(dto.getParkingSpaces());
+                // in case the user had a list with 4 of the same apartmentDetails but all new
+                entity.setDetails(apartmentDetailsRepo.save(detailsForEntity));
+            }
 
-//            entity.setUnitNumber(dto.getUnitNumber());
+            entity.setUnitNumber(dto.getUnitNumber());
+            entities.add(entity);
         }
-        return null;
+        return entities;
     }
 }
-
-
-
-        // one extra part, if the details of an apartment already exists, you need to get the key and assign it
-
-
-
-
-//        List<Apartment> result = new ArrayList<>();
-//
-//        for (NewApartmentDto newApartmentDto : requestDtos) {
-//            Apartment newApartment = new Apartment();
-//
-//            ApartmentDetails newApartmentDetails = new ApartmentDetails();
-//            ApartmentDetailsDto apartmentDetailsDto = newApartmentDto.getApartmentDetails();
-//            long bedrooms = apartmentDetailsDto.getBedrooms();
-//            long bathrooms = apartmentDetailsDto.getBathrooms();
-//            long parkingSpaces = apartmentDetailsDto.getParkingSpaces();
-//
-//            List<Apartment> existingDetails = apartmentsRepo.findApartmentByDetails_BedroomsAndDetails_BathroomsAndDetails_ParkingSpaces(bedrooms, bathrooms, parkingSpaces);
-//            if (existingDetails.size() == 1) {
-//                newApartmentDetails.setApartmentDetailsID(existingDetails.get(0).getDetails().getApartmentDetailsID());
-//            }
-//
-//            newApartmentDetails.setBedrooms(apartmentDetailsDto.getBedrooms());
-//            newApartmentDetails.setBathrooms(apartmentDetailsDto.getBathrooms());
-//            newApartmentDetails.setParkingSpaces(apartmentDetailsDto.getParkingSpaces());
-//
-//            newApartment.setUnitNumber(newApartmentDto.getUnitNumber());
-//            newApartment.setDetails(newApartmentDetails);
-//            result.add(newApartment);
-//        }
-//
-//        return result;
-//    }

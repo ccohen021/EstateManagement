@@ -11,6 +11,7 @@ import com.bbdsoftware.estatemanagement.repositories.ApartmentsRepository;
 import com.bbdsoftware.estatemanagement.repositories.UserApartmentRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,6 +47,7 @@ public class ApartmentServices {
 
     public Iterable<Apartment> addApartment(List<NewApartmentDto> dtos) {
         // validation
+        // unit cannot already exist
         List<String> existingUnits = dtos.stream()
                 .map(NewApartmentDto::getUnitNumber)
                 .filter(apartmentsRepo::existsById)
@@ -56,10 +58,19 @@ public class ApartmentServices {
             throw new UnitExistsException("UnitNumber(s) [" +  String.join(",", existingUnits) + "] already exists");
         }
 
-        // processing
-        List<Apartment> entities = mappers.NewApartmentDtoToApartmentEntity(dtos);
-        return entities;
+        // cannot add the same unit twice
+        List<Long> unitNumbers = dtos.stream()
+                .map(NewApartmentDto::getUnitNumber)
+                .toList();
+        if (new HashSet<>(unitNumbers).size() != unitNumbers.size()) {
+            throw new UnitExistsException("Cannot add a unitNumber more than once");
+        }
 
+
+        // save
+        // TODO : Get rid of the side effect in NewApartmentDtoToApartmentEntity
+        List<Apartment> entities = mappers.NewApartmentDtoToApartmentEntity(dtos);
+        return apartmentsRepo.saveAll(entities);
     }
 
 
