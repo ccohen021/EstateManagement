@@ -2,21 +2,18 @@ package com.bbdsoftware.estatemanagement.dto;
 
 import jakarta.validation.constraints.NotNull;
 
-public class NewApartmentDto {
+public class PartialApartmentDto {
 
     @NotNull(message = "UnitNumber field is required")
     private Long unitNumber;
 
-    @NotNull(message = "Bedrooms field is required")
     private Long bedrooms;
 
-    @NotNull(message = "Bathrooms field is required")
     private Long bathrooms;
 
-    @NotNull(message = "parkingSpaces field is required")
     private Long parkingSpaces;
 
-    public long getBedrooms() {
+    public Long getBedrooms() {
         return bedrooms;
     }
 
@@ -40,6 +37,7 @@ public class NewApartmentDto {
         return parkingSpaces;
     }
 
+
     public void setParkingSpaces(Long parkingSpaces) {
         this.parkingSpaces = parkingSpaces;
     }
@@ -48,6 +46,7 @@ public class NewApartmentDto {
     public long getUnitNumber() {
         return unitNumber;
     }
+
 
     public void setUnitNumber(Long unitNumber) {
         this.unitNumber = unitNumber;

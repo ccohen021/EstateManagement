@@ -2,6 +2,8 @@ package com.bbdsoftware.estatemanagement.controllers;
 
 import com.bbdsoftware.estatemanagement.exceptions.UnitExistsException;
 import com.bbdsoftware.estatemanagement.exceptions.UnitNotFoundException;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -27,6 +29,7 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
+
     @ExceptionHandler(UnitExistsException.class)
     public ResponseEntity<Object> handleUnitNumberAlreadyExistException(UnitExistsException ex, WebRequest request) {
         Map<String, Object> body = new HashMap<>();
@@ -37,11 +40,20 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-        List<String> errors = ex.getBindingResult().getFieldErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).toList();
+        List<String> errors = ex.getBindingResult().getFieldErrors()
+                .stream()
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .toList();
         Map<String, List<String>> errorResponse = new HashMap<>();
         errorResponse.put("errors", errors);
-
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<Object> handleListOfApartmentsMissingFieldsException(ConstraintViolationException ex, WebRequest request) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("message", ex.getConstraintViolations().stream().map(ConstraintViolation::getMessage).toList());
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
 }

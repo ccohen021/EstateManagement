@@ -1,6 +1,7 @@
 package com.bbdsoftware.estatemanagement.services;
 
 import com.bbdsoftware.estatemanagement.dto.NewApartmentDto;
+import com.bbdsoftware.estatemanagement.dto.PartialApartmentDto;
 import com.bbdsoftware.estatemanagement.dto.TenantDto;
 import com.bbdsoftware.estatemanagement.entities.Apartment;
 import com.bbdsoftware.estatemanagement.entities.UserApartment;
@@ -45,7 +46,7 @@ public class ApartmentServices {
     }
 
 
-    public Iterable<Apartment> addApartment(List<NewApartmentDto> dtos) {
+    public Iterable<Apartment> addApartments(List<NewApartmentDto> dtos) {
         // validation
         // unit cannot already exist
         List<String> existingUnits = dtos.stream()
@@ -66,10 +67,9 @@ public class ApartmentServices {
             throw new UnitExistsException("Cannot add a unitNumber more than once");
         }
 
-
         // save
         // TODO : Get rid of the side effect in NewApartmentDtoToApartmentEntity
-        List<Apartment> entities = mappers.NewApartmentDtoToApartmentEntity(dtos);
+        List<Apartment> entities = mappers.newApartmentDtoToApartmentEntity(dtos);
         return apartmentsRepo.saveAll(entities);
     }
 
@@ -89,5 +89,16 @@ public class ApartmentServices {
         return userApartmentRepo.findAllByMovedOutIsNotNullAndApartmentUnitNumber(unitNumber);
     }
 
+    public Apartment editApartment(PartialApartmentDto dto) {
+        // validate
+        Optional<Apartment> optionalEntity = apartmentsRepo.findById(dto.getUnitNumber());
+        if (optionalEntity.isEmpty()) {
+            throw new UnitNotFoundException();
+        }
 
+        // map the partial dto to entity
+        Apartment updatedEntity = mappers.partialApartmentDtoToApartmentEntity(optionalEntity.get(), dto);
+//        return apartmentsRepo.save(updatedEntity);
+        return updatedEntity;
+    }
 }

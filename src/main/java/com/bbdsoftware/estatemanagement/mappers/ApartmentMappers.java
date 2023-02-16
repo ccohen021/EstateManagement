@@ -1,6 +1,7 @@
 package com.bbdsoftware.estatemanagement.mappers;
 
 import com.bbdsoftware.estatemanagement.dto.NewApartmentDto;
+import com.bbdsoftware.estatemanagement.dto.PartialApartmentDto;
 import com.bbdsoftware.estatemanagement.dto.TenantDto;
 import com.bbdsoftware.estatemanagement.entities.Apartment;
 import com.bbdsoftware.estatemanagement.entities.ApartmentDetails;
@@ -35,7 +36,7 @@ public class ApartmentMappers {
     }
 
     // side effect :(
-    public List<Apartment> NewApartmentDtoToApartmentEntity(List<NewApartmentDto> dtos) {
+    public List<Apartment> newApartmentDtoToApartmentEntity(List<NewApartmentDto> dtos) {
         List<Apartment> entities = new ArrayList<>();
 
         for (NewApartmentDto dto : dtos) {
@@ -63,6 +64,27 @@ public class ApartmentMappers {
             entity.setUnitNumber(dto.getUnitNumber());
             entities.add(entity);
         }
+
         return entities;
+    }
+
+    public Apartment partialApartmentDtoToApartmentEntity(Apartment entity, PartialApartmentDto dto) {
+        // map all fields not null to the entity
+        ApartmentDetails entityDetails = entity.getDetails();
+        entityDetails.setBedrooms(dto.getBedrooms() == null ? entityDetails.getBedrooms() : dto.getBedrooms());
+        entityDetails.setBathrooms(dto.getBathrooms() == null ? entityDetails.getBathrooms() : dto.getBathrooms());
+        entityDetails.setParkingSpaces(dto.getParkingSpaces() == null ? entityDetails.getParkingSpaces() : dto.getParkingSpaces());
+
+        entity.setDetails(entityDetails);
+
+        // if the apartmentDetails became a new apartmentDetails entity - it should be added
+        Optional<ApartmentDetails> optionalEntityDetails = apartmentDetailsRepo.findApartmentDetailsByBedroomsAndBathroomsAndParkingSpaces(
+                entityDetails.getBedrooms(),
+                entityDetails.getBathrooms(),
+                entityDetails.getParkingSpaces()
+        );
+
+        optionalEntityDetails.ifPresent(entity::setDetails);
+        return entity;
     }
 }

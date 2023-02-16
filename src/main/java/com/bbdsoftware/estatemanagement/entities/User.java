@@ -15,10 +15,10 @@ public class User {
   private String phoneNumber;
   private String emailAddress;
 
-
   public long getUserId() {
     return userId;
   }
+
 
   public void setUserId(long userId) {
     this.userId = userId;
@@ -29,6 +29,7 @@ public class User {
     return firstName;
   }
 
+
   public void setFirstName(String firstName) {
     this.firstName = firstName;
   }
@@ -37,6 +38,7 @@ public class User {
   public String getLastName() {
     return lastName;
   }
+
 
   public void setLastName(String lastName) {
     this.lastName = lastName;
@@ -47,6 +49,7 @@ public class User {
     return phoneNumber;
   }
 
+
   public void setPhoneNumber(String phoneNumber) {
     this.phoneNumber = phoneNumber;
   }
@@ -56,8 +59,8 @@ public class User {
     return emailAddress;
   }
 
+
   public void setEmailAddress(String emailAddress) {
     this.emailAddress = emailAddress;
   }
-
 }

@@ -16,6 +16,7 @@ public class ApartmentDetails {
     return apartmentDetailsID;
   }
 
+
   public void setApartmentDetailsID(long sizeId) {
     this.apartmentDetailsID = sizeId;
   }
@@ -24,6 +25,7 @@ public class ApartmentDetails {
   public long getBedrooms() {
     return bedrooms;
   }
+
 
   public void setBedrooms(long bedrooms) {
     this.bedrooms = bedrooms;
@@ -34,6 +36,7 @@ public class ApartmentDetails {
     return bathrooms;
   }
 
+
   public void setBathrooms(long bathrooms) {
     this.bathrooms = bathrooms;
   }
@@ -43,8 +46,8 @@ public class ApartmentDetails {
     return parkingSpaces;
   }
 
+
   public void setParkingSpaces(long parkingSpaces) {
     this.parkingSpaces = parkingSpaces;
   }
-
 }
