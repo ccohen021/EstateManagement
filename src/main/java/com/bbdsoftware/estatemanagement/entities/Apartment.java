@@ -1,16 +1,20 @@
 package com.bbdsoftware.estatemanagement.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "apartments")
 public class Apartment {
 
   @Id
+  @NotNull
   private long unitNumber;
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "ApartmentDetailsID")
+  @NotNull
   private ApartmentDetails details;
 
 

@@ -7,13 +7,14 @@ import jakarta.persistence.*;
 public class UserApartment {
 
   @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long userApartmentsId;
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "UnitNumber")
   private Apartment apartment;
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "userID")
   private User user;
 

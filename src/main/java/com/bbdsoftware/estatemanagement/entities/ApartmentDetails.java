@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 public class ApartmentDetails {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long apartmentDetailsID;
   private long bedrooms;
   private long bathrooms;
