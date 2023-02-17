@@ -37,13 +37,13 @@ public class ApartmentsController {
 
 
     @PostMapping()
-    public Iterable<Apartment> addApartments(@RequestBody List<@Valid NewApartmentDto> dtos) {
+    public Iterable<Apartment> addApartments(@Valid @RequestBody List<@Valid NewApartmentDto> dtos) {
         return services.addApartments(dtos);
     }
 
 
     @PatchMapping("/{unitNumber}")
-    public Apartment editApartment(@Valid @RequestBody PartialApartmentDto dto) {
+    public Apartment editApartment(@RequestBody @Valid PartialApartmentDto dto) {
         return services.editApartment(dto);
     }
 }

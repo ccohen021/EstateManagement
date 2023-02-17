@@ -68,7 +68,6 @@ public class ApartmentServices {
         }
 
         // save
-        // TODO : Get rid of the side effect in NewApartmentDtoToApartmentEntity
         List<Apartment> entities = mappers.newApartmentDtoToApartmentEntity(dtos);
         return apartmentsRepo.saveAll(entities);
     }
@@ -98,7 +97,6 @@ public class ApartmentServices {
 
         // map the partial dto to entity
         Apartment updatedEntity = mappers.partialApartmentDtoToApartmentEntity(optionalEntity.get(), dto);
-//        return apartmentsRepo.save(updatedEntity);
-        return updatedEntity;
+        return apartmentsRepo.save(updatedEntity);
     }
 }

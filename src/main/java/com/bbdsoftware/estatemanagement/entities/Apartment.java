@@ -11,10 +11,9 @@ public class Apartment {
     @NotNull
     private long unitNumber;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ApartmentDetailsID")
-    @NotNull
-    private ApartmentDetails details;
+    private long bedrooms;
+    private long bathrooms;
+    private long parkingSpaces;
 
 
     public long getUnitNumber() {
@@ -26,13 +25,27 @@ public class Apartment {
       this.unitNumber = unitNumber;
     }
 
-
-    public ApartmentDetails getDetails() {
-      return details;
+    public long getBedrooms() {
+        return bedrooms;
     }
 
+    public void setBedrooms(long bedrooms) {
+        this.bedrooms = bedrooms;
+    }
 
-  public void setDetails(ApartmentDetails details) {
-      this.details = details;
+    public long getBathrooms() {
+        return bathrooms;
+    }
+
+    public void setBathrooms(long bathrooms) {
+        this.bathrooms = bathrooms;
+    }
+
+    public long getParkingSpaces() {
+        return parkingSpaces;
+    }
+
+    public void setParkingSpaces(long parkingSpaces) {
+        this.parkingSpaces = parkingSpaces;
     }
 }
