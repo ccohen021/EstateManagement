@@ -1,0 +1,17 @@
+package com.bbdsoftware.estatemanagement.dtos;
+
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class NewVisitDTO {
+    @NotNull
+    @Email
+    private String email;
+
+    @NotNull
+    private String visitorsPhoneNumber;
+}

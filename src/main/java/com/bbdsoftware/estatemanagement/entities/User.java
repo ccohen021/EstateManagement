@@ -1,66 +1,28 @@
 package com.bbdsoftware.estatemanagement.entities;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
-@Entity
-@Table(name = "users")
+@Entity(name = "Users")
+@Table(name = "Users")
+@Getter
+@Setter
 public class User {
-
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long userId;
+  @Column(name = "userId")
+  private Integer userId;
 
+  @Column(name = "firstName")
   private String firstName;
+
+  @Column(name = "lastName")
   private String lastName;
-  private String phoneNumber;
+
+  @Column(name = "emailAddress")
   private String emailAddress;
 
-  public long getUserId() {
-    return userId;
-  }
-
-
-  public void setUserId(long userId) {
-    this.userId = userId;
-  }
-
-
-  public String getFirstName() {
-    return firstName;
-  }
-
-
-  public void setFirstName(String firstName) {
-    this.firstName = firstName;
-  }
-
-
-  public String getLastName() {
-    return lastName;
-  }
-
-
-  public void setLastName(String lastName) {
-    this.lastName = lastName;
-  }
-
-
-  public String getPhoneNumber() {
-    return phoneNumber;
-  }
-
-
-  public void setPhoneNumber(String phoneNumber) {
-    this.phoneNumber = phoneNumber;
-  }
-
-
-  public String getEmailAddress() {
-    return emailAddress;
-  }
-
-
-  public void setEmailAddress(String emailAddress) {
-    this.emailAddress = emailAddress;
-  }
+  @Column(name = "active")
+  private Boolean active;
 }
